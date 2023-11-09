@@ -5,7 +5,6 @@ import { JWT_KEY } from "../keys.js";
 
 export const login = async (req, res) => {
   const { password, email } = req.body;
-
   try {
     const searchUserQuery = "SELECT * FROM users WHERE email = $1";
     const result = await database.query(searchUserQuery, [email]);
