@@ -5,6 +5,9 @@ import isAuth from "./middlewares/isAuth.js";
 import {
   addMyProducts,
   deleteMyProducts,
+  deleteOneMyProduct,
+  getMyProducts,
+  getOneProduct,
   getProducts,
 } from "./controllers/products-controller.js";
 
@@ -21,9 +24,17 @@ app.post("/register", register);
 /**/
 
 /*Товари*/
+app.get("/get-one-product/:id", getOneProduct);
 app.get("/products", getProducts);
-app.post("/add-my-products", addMyProducts);
-app.post("/delete-my-products", deleteMyProducts);
+app.get("/get-my-products/:userId", isAuth, getMyProducts);
+
+app.post("/add-my-products", isAuth, addMyProducts);
+app.post("/delete-my-products/:userId", isAuth, deleteMyProducts);
+app.post(
+  "/delete-one-my-product/:userId/:productId",
+  isAuth,
+  deleteOneMyProduct
+);
 /**/
 
 /*Сервер*/
