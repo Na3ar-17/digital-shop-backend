@@ -77,8 +77,14 @@ export const getMyProducts = async (req, res) => {
       const productIds = orderResult.rows[0].product_ids;
       const counts = orderResult.rows[0].counts;
 
+      if (productIds.length === 0) {
+        return res
+          .status(200)
+          .json({ message: "No products found for the specified user." });
+      }
+
       const getProductsQuery =
-        "SELECT id, name, price, version, display, os, processor, ram FROM products WHERE id = ANY($1)";
+        "SELECT * FROM products WHERE id = ANY($1::integer[])";
       const productsResult = await database.query(getProductsQuery, [
         productIds,
       ]);
@@ -93,6 +99,7 @@ export const getMyProducts = async (req, res) => {
         os: product.os,
         processor: product.processor,
         ram: product.ram,
+        image: product.image,
       }));
 
       res.status(200).json({
